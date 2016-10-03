@@ -21,6 +21,7 @@ $(FixString($syntax))
 	}
 @"	
 ### Syntax
+ ``````Powershell
 $(FixString($synopsis))
 "@	
 
@@ -40,6 +41,7 @@ $(FixString($synopsis))
 	
     if($_.parameters){
 @"
+``````
 ### Parameters
 
 <table class="table table-striped table-bordered table-condensed visible-on">

@@ -1,14 +1,14 @@
 param(
     [parameter(Mandatory=$true, Position=0)] [string] $moduleName,
-    [parameter(Mandatory=$false, Position=1)] [string] $template = "./out-html-template.ps1",
+    [parameter(Mandatory=$false, Position=1)] [string] $template = "./out-markdown-template.ps1",
     [parameter(Mandatory=$false, Position=2)] [string] $outputDir = './help',
-    [parameter(Mandatory=$false, Position=3)] [string] $fileName = 'index.html'
+    [parameter(Mandatory=$false, Position=3)] [string] $fileName = 'index.md'
 )
 
 function FixString ($in = '', [bool]$includeBreaks = $false){
     if ($in -eq $null) { return }
 
-    $rtn = $in.Replace('&', '&amp;').Replace('<', '&lt;').Replace('>', '&gt;').Trim()
+    $rtn = $in.Replace('&', '&amp;').Trim()
 
     if($includeBreaks){
         $rtn = $rtn.Replace([Environment]::NewLine, '<br>')
@@ -20,7 +20,7 @@ function Update-Progress($name, $action){
     Write-Progress -Activity "Rendering $action for $name" -CurrentOperation "Completed $progress of $totalCommands." -PercentComplete $(($progress/$totalCommands)*100)
 }
 $i = 0
-$commandsHelp = (Get-Command -module $moduleName) | get-help -full | Where-Object {! $_.name.EndsWith('.ps1')}
+$commandsHelp = (Get-Command -module $moduleName) | get-help | Where-Object {! $_.name.EndsWith('.ps1')}
 
 foreach ($h in $commandsHelp){
     $cmdHelp = (Get-Command $h.Name)
